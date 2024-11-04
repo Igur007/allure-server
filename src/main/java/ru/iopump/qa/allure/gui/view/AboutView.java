@@ -35,26 +35,12 @@ public class AboutView extends VerticalLayout {
         var description = new Div(
             new Paragraph("Version: " + APP_VERSION),
             new Paragraph("This is a server to save and aggregate Allure Report results"),
-            new Paragraph(new Anchor("https://docs.qameta.io/allure/", "Allure Reporting Framework")),
-            new Paragraph("Allure Reports are very popular QA Reporting tool in Russia. " +
+            new Paragraph("Allure Reports are very popular QA Reporting tool." +
                 "But it hasn't any free EE servers, just plugins like Jenkins Plugin. " +
                 "This solution can be the only place to save, generate and provide Allure Reports in an organization. " +
                 "Run your tests, make zip archive with the allure results and upload to the Allure Server by API or Web-UI"),
-            new Paragraph(
-                new Span("Gradle Plugin: "),
-                new Anchor("https://github.com/kochetkov-ma/allure-server-gradle", " allure-server-gradle "),
-                new Span(
-                    " - There is a Gradle plugin for integration you Test Framework - your CI - your Allure Server. Provide additional functions for GitLab CI")
-            ),
-            new Paragraph(
-                new Span("Kotest Listener: "),
-                new Anchor("https://github.com/kochetkov-ma/kotest-allure", "kotest-allure"),
-                new Span(" - If you using Kotest (Kotlin) for auto-testing try this extended Kotest Allure listener")
-            )
+            new Paragraph(new Anchor("https://docs.qameta.io/allure/", "Allure Reporting Framework")),
         );
-
-        var author = new Paragraph("Author: Maxim Kochetkov, Russia, Moscow");
-        var mailTo = new Anchor("mailto:kochetkov-ma@yandex.ru", "Email: kochetkov-ma@yandex.ru");
 
         var mainLayout = new VerticalLayout(description, author, mailTo);
         mainLayout.getStyle().set(FONT_FAMILY, GERMANIA_ONE);

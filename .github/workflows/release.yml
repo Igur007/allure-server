@@ -46,7 +46,7 @@ jobs:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         with:
           platforms: linux/amd64,linux/arm64
-          name: kochetkovma/allure-server
+          name: igur007/allure-server
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           tags: "latest,${{ env.RELEASE_VERSION }}"

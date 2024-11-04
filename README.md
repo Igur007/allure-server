@@ -1,13 +1,5 @@
 Allure Portal (Allure Report Server)
 =================================
-![Build / Test / Check](https://github.com/kochetkov-ma/allure-server/workflows/Build%20/%20Test%20/%20Check/badge.svg?branch=master)
-
-![Static Badge](https://img.shields.io/badge/java-21-brightgreen)
-![Static Badge](https://img.shields.io/badge/gradle-8.8-brightgreen)
-![Static Badge](https://img.shields.io/badge/Spring%20Boot-3-green)
-
-![Docker Image Version](https://img.shields.io/docker/v/kochetkovma/allure-server?label=DockerHub&link=https%3A%2F%2Fhub.docker.com%2Fr%2Fkochetkovma%2Fallure-server)
-![Docker Pulls](https://img.shields.io/docker/pulls/kochetkovma/allure-server?link=https%3A%2F%2Fhub.docker.com%2Fr%2Fkochetkovma%2Fallure-server)
 
 ## About
 
@@ -21,7 +13,6 @@ Just use Spring Boot Jar from Release Page.
 
 Web GUI has been available from Release v2.0.0
 
-Example on [allure.iopump.ru](http://allure.iopump.ru/)
 
 ## Get Started
 
