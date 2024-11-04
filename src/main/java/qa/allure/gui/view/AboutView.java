@@ -4,7 +4,6 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -51,7 +50,7 @@ public class AboutView extends VerticalLayout {
         try (final InputStream inputStream = ResourceUtil.getResourceAsStream("version.info")) {
             var version = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
             log.info("App version from version.info = " + version);
-            return StringUtils.isBlank(version) ? defaultVersion : version;
+            return (StringUtils.isBlank(version) || "unspecified".equalsIgnoreCase(version)) ? defaultVersion : version;
         } catch (Exception e) {
             log.error("Version error", e);
             return defaultVersion;
