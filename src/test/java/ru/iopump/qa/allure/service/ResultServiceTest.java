@@ -1,4 +1,4 @@
-package ru.iopump.qa.allure.service;
+package qa.allure.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;

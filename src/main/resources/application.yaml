@@ -64,10 +64,10 @@ allure:
   clean:
     dryRun: false
     time: "00:00"
-    ageDays: 90
+    ageDays: 30
     paths:
       - path: "manual_uploaded"
-        ageDays: 30
+        ageDays: 10
   server-base-url:
 logging:
   level:
@@ -76,8 +76,8 @@ logging:
     org.springframework: INFO
     org.springframework.core: WARN
     org.springframework.beans.factory.support: WARN
-    ru.iopump.qa.allure: INFO # Allure Server Logs
-    ru.iopump.qa.allure.api: DEBUG
+    qa.allure: INFO # Allure Server Logs
+    qa.allure.api: DEBUG
 
 tms:
   enabled: false

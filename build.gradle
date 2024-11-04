@@ -58,7 +58,7 @@ classes {
     }
 }
 springBoot {
-    mainClass = "ru.iopump.qa.allure.Application"
+    mainClass = "qa.allure.Application"
 }
 
 tasks.named("bootJar") {

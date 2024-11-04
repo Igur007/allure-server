@@ -1,0 +1,77 @@
+package qa.allure.gui;
+
+import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.icon.SvgIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.router.HighlightConditions;
+import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.StreamResource;
+import qa.allure.gui.view.AboutView;
+import qa.allure.gui.view.ReportsView;
+import qa.allure.gui.view.ResultsView;
+import qa.allure.gui.view.SwaggerView;
+
+import java.io.Serial;
+
+public class MainLayout extends AppLayout {
+
+    public static final String ALLURE_SERVER = "Allure Server";
+
+    @Serial
+    private static final long serialVersionUID = 2881152775131362224L;
+
+    public MainLayout() {
+        createHeader();
+        createDrawer();
+    }
+
+    private void createHeader() {
+        var logo = new H3(ALLURE_SERVER);
+        logo.addClassName("logo");
+
+        var header = new HorizontalLayout(new DrawerToggle(), logo);
+        header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        header.setWidth("100%");
+        header.addClassName("header");
+
+        addToNavbar(header);
+    }
+
+    private void createDrawer() {
+        var reports = new RouterLink("Reports", ReportsView.class);
+        reports.setHighlightCondition(HighlightConditions.sameLocation());
+        var results = new RouterLink("Results", ResultsView.class);
+        results.setHighlightCondition(HighlightConditions.sameLocation());
+        var swagger = new RouterLink("Swagger", SwaggerView.class);
+        results.setHighlightCondition(HighlightConditions.sameLocation());
+        var about = new RouterLink("About", AboutView.class);
+        results.setHighlightCondition(HighlightConditions.sameLocation());
+
+        Tabs tabs = new Tabs(new Tab(reports), new Tab(results), new Tab(swagger), new Tab(about));
+        tabs.setOrientation(Tabs.Orientation.VERTICAL);
+        tabs.setSizeFull();
+
+        var github = new Anchor("https://github.com/igur007/allure-server",
+            new SvgIcon(new StreamResource("github.svg", () -> getClass().getResourceAsStream("/icons/github.svg"))));
+        github.setTarget("_blank");
+        var github2 = new Anchor("https://github.com/kochetkov-ma/allure-server",
+            new SvgIcon(new StreamResource("github.svg", () -> getClass().getResourceAsStream("/icons/github.svg"))));
+        github2.setTarget("_blank");
+        var dockerHub = new Anchor("https://hub.docker.com/r/igur007/allure-server",
+            new SvgIcon(new StreamResource("docker.svg", () -> getClass().getResourceAsStream("/icons/docker.svg"))));
+        dockerHub.setTarget("_blank");
+
+        var footer = new HorizontalLayout(github, github2, dockerHub);
+        var menu = new VerticalLayout(tabs, footer);
+        menu.setHeightFull();
+
+        addToDrawer(menu);
+    }
+}

@@ -1,4 +1,4 @@
-package ru.iopump.qa.allure.helper.plugin;
+package qa.allure.helper.plugin;
 
 import io.qameta.allure.DefaultLaunchResults;
 import io.qameta.allure.core.LaunchResults;
@@ -10,11 +10,11 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.iopump.qa.allure.api.FeignConfiguration;
-import ru.iopump.qa.allure.properties.AllureProperties;
-import ru.iopump.qa.allure.properties.BasicProperties;
-import ru.iopump.qa.allure.properties.CleanUpProperties;
-import ru.iopump.qa.allure.properties.TmsProperties;
+import qa.allure.api.FeignConfiguration;
+import qa.allure.properties.AllureProperties;
+import qa.allure.properties.BasicProperties;
+import qa.allure.properties.CleanUpProperties;
+import qa.allure.properties.TmsProperties;
 
 import java.nio.file.Path;
 import java.util.Collection;

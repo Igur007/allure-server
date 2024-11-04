@@ -1,4 +1,4 @@
-package ru.iopump.qa.allure.helper;
+package qa.allure.helper;
 
 import org.junit.jupiter.api.Test;
 

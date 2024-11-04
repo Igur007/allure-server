@@ -1,0 +1,32 @@
+# values.yaml
+
+allureServer:
+  image: "igur007/allure-server:v2.13.6"
+  replicas: 1
+  service:
+    port: 8080
+  env:
+    SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/allure"
+    SPRING_DATASOURCE_USERNAME: "postgres"
+    SPRING_DATASOURCE_PASSWORD: "postgres"
+    SPRING_JPA_DATABASE: "postgresql"
+    SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+    TMS_ENABLED: "false"  # Changed to string
+    TMS_HOST: "jira.localhost"
+    TMS_TOKEN: "<token-here>"
+    TMS_DRYRUN: "false"  # Changed to string
+  persistence:
+    extSize: "1Gi"
+    allureSize: "5Gi"
+
+postgres:
+  image: "postgres:16.3-alpine"
+  replicas: 1
+  service:
+    port: 5432
+  env:
+    POSTGRES_PASSWORD: "postgres"
+    POSTGRES_USER: "postgres"
+    POSTGRES_DB: "allure"
+  persistence:
+    size: "5Gi"

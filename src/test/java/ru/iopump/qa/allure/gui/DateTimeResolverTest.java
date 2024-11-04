@@ -1,10 +1,10 @@
-package ru.iopump.qa.allure.gui;
+package qa.allure.gui;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import ru.iopump.qa.allure.properties.AllureProperties;
+import qa.allure.properties.AllureProperties;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

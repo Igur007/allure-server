@@ -1,10 +1,10 @@
-package ru.iopump.qa.allure.helper.plugin.youtrack;
+package qa.allure.helper.plugin.youtrack;
 
 import org.junit.jupiter.api.Test;
-import ru.iopump.qa.allure.helper.plugin.youtrack.MarkdownStatisticModel.Footer;
-import ru.iopump.qa.allure.helper.plugin.youtrack.MarkdownStatisticModel.Row;
-import ru.iopump.qa.allure.helper.plugin.youtrack.MarkdownStatisticModel.Row.Statistic;
-import ru.iopump.qa.allure.helper.plugin.youtrack.MarkdownStatisticModel.Total;
+import qa.allure.helper.plugin.youtrack.MarkdownStatisticModel.Footer;
+import qa.allure.helper.plugin.youtrack.MarkdownStatisticModel.Row;
+import qa.allure.helper.plugin.youtrack.MarkdownStatisticModel.Row.Statistic;
+import qa.allure.helper.plugin.youtrack.MarkdownStatisticModel.Total;
 
 import java.util.List;
 

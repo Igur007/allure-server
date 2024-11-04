@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: km-allure-server
+  namespace: allure
+  labels:
+    name: allure-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: allure-server
+  template:
+    metadata:
+      labels:
+        name: allure-server
+    spec:
+      automountServiceAccountToken: true
+      serviceAccountName: allure-server
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 100
+      containers:
+        - name: allure-server
+          image: "igur007/allure-server:v2.13.6"
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres:5432/allure"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "postgres"
+            - name: SPRING_JPA_DATABASE
+              value: "postgresql"
+            - name: SPRING_JPA_HIBERNATE_DDL
+              value: "update"
+            - name: TMS_ENABLED
+              value: "false"                                         
+          resources:
+            requests:
+              cpu: '1'
+              memory: 750Mi
+            limits:
+              cpu: '2'
+              memory: 1300Mi

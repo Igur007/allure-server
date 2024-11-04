@@ -1,0 +1,65 @@
+# templates/allure-server.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: allure-server
+spec:
+  replicas: {{ .Values.allureServer.replicas }}
+  selector:
+    matchLabels:
+      app: allure-server
+  template:
+    metadata:
+      labels:
+        app: allure-server
+    spec:
+      containers:
+        - name: allure-server
+          image: {{ .Values.allureServer.image | quote }}
+          ports:
+            - containerPort: {{ .Values.allureServer.service.port }}
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: {{ .Values.allureServer.env.SPRING_DATASOURCE_URL | quote }}
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.allureServer.env.SPRING_DATASOURCE_USERNAME | quote }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: {{ .Values.allureServer.env.SPRING_DATASOURCE_PASSWORD | quote }}
+            - name: SPRING_JPA_DATABASE
+              value: {{ .Values.allureServer.env.SPRING_JPA_DATABASE | quote }}
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: {{ .Values.allureServer.env.SPRING_JPA_HIBERNATE_DDL_AUTO | quote }}
+            - name: TMS_ENABLED
+              value: {{ .Values.allureServer.env.TMS_ENABLED | quote }}
+            - name: TMS_HOST
+              value: {{ .Values.allureServer.env.TMS_HOST | quote }}
+            - name: TMS_TOKEN
+              value: {{ .Values.allureServer.env.TMS_TOKEN | quote }}
+            - name: TMS_DRYRUN
+              value: {{ .Values.allureServer.env.TMS_DRYRUN | quote }}
+          volumeMounts:
+            - name: ext-volume
+              mountPath: /ext
+            - name: allure-server-store
+              mountPath: /allure
+      volumes:
+        - name: ext-volume
+          persistentVolumeClaim:
+            claimName: ext-pvc
+        - name: allure-server-store
+          persistentVolumeClaim:
+            claimName: allure-server-store-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: allure-server
+spec:
+  selector:
+    app: allure-server
+  ports:
+    - protocol: TCP
+      port: {{ .Values.allureServer.service.port }}
+      targetPort: {{ .Values.allureServer.service.port }}
+  type: ClusterIP

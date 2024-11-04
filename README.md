@@ -1,6 +1,8 @@
 Allure Portal (Allure Report Server)
 =================================
 
+It's a fork of kochetkovma/allure-server to have generic working helm 
+
 ## About
 
 https://allurereport.org/docs
@@ -23,7 +25,7 @@ Running as Docker container look at: [readme](https://hub.docker.com/r/kochetkov
 
 ### Kubernetes
 
-Use Helm Chart for Kubernetes from **[.helm/allure-server/README.md](.helm/allure-server/README.md)**
+Use Helm Chart for Kubernetes from **[.helm/allure-server/README.md](helm-allure/README.md)**
 
 ### Jar
 
@@ -276,46 +278,6 @@ OR in `docker-compose.yaml`
 > 
 > For using image from URL your should provide access to Company Network ot Internet from container
 
-### Plugin System for Java Developers (since 2.13.6) `new ⚡` `beta`
-Use `Java 21`
-1. Create interface in your project in package `ru.iopump.qa.allure.helper.plugin`. It has to be exactly the same as in [AllureServerPlugin.java](src%2Fmain%2Fjava%2Fru%2Fiopump%2Fqa%2Fallure%2Fhelper%2Fplugin%2FAllureServerPlugin.java)
-    ```java
-    package ru.iopump.qa.allure.helper.plugin;
-    
-    import io.qameta.allure.core.LaunchResults;
-    import org.springframework.beans.factory.BeanFactory;
-    import ru.iopump.qa.allure.properties.AllureProperties;
-    import ru.iopump.qa.allure.properties.TmsProperties;
-    
-    import java.nio.file.Path;
-    import java.util.Collection;
-    
-    public interface AllureServerPlugin {
-        void onGenerationStart(Collection<Path> resultsDirectories, Context context);
-        void onGenerationFinish(Path reportDirectory, Collection<LaunchResults> launchResults, Context context);
-        String getName();
-        default boolean isEnabled(Context context) {
-            return true;
-        }
-        interface Context {
-            AllureProperties getAllureProperties();
-            TmsProperties tmsProperties();
-            BeanFactory beanFactory();
-            String getReportUrl();
-        }
-    }
-    ```
-2. Crate your plugin like:
-   - [CustomReportMetaPlugin.java](src%2Fmain%2Fjava%2Fru%2Fiopump%2Fqa%2Fallure%2Fhelper%2Fplugin%2FCustomReportMetaPlugin.java)
-   - [YouTrackPlugin.java](src%2Fmain%2Fjava%2Fru%2Fiopump%2Fqa%2Fallure%2Fhelper%2Fplugin%2FYouTrackPlugin.java)
-3. Create `FAT JAR` with all deps. Try to get rid of external deps if possible
-4. Put your jar to container by volume to `/ext` folder
-5. Run the server
-6. Check logs. There is your plugin in message after plugins discovery and loading:
-  ```
-    [ALLURE SERVER CONFIGURATION] Allure server plugins loaded: [class ru.iopump.qa.allure.helper.plugin.CustomReportMetaPlugin:Logo Plugin, class ru.iopump.qa.allure.helper.plugin.YouTrackPlugin:YouTrack integration]
-  ```
-
 ### Jira Integration (since 2.14.0) `coming soon`
 
 ### Plugin API in MavenCentral with proper Documentation (since 2.14.0) `coming soon`
@@ -408,8 +370,6 @@ Example:
 
 ### GUI
 
-##### See example on [allure.iopump.ru](http://allure.iopump.ru/)
-
 Allure Server provide WEB UI to access to reports and results.  
 By default WEB UI is available on path `/ui` and there is redirection from `/` to `/ui`   
 Example: `http://localhost:8080/ui`  
@@ -433,12 +393,12 @@ logging:
     org.springframework: INFO
     org.springframework.core: WARN
     org.springframework.beans.factory.support: WARN
-    ru.iopump.qa:allure: INFO # Allure Server Logs
+    qa:allure: INFO # Allure Server Logs
 ```
 
 You may override it by Environment Variables, for example enable `DEBUG` for allure server:
 ```
-    export LOGGING_LEVEL_RU_IOPUMP_QA_ALLURE=DEBUG
+    export LOGGING_LEVEL_QA_ALLURE=DEBUG
 ```
 
 Or switch all logs to `DEBUG`:
@@ -446,5 +406,8 @@ Or switch all logs to `DEBUG`:
     export LOGGING_LEVEL_ROOT=DEBUG
 ```
 
-## Goals
-See [milestones](https://github.com/kochetkov-ma/allure-server/milestones)
+## Build locally
+```
+    gradle bootJar
+```
+
