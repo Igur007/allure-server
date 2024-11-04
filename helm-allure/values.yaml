@@ -1,7 +1,7 @@
 # values.yaml
 
 allureServer:
-  image: "igur007/allure-server:v2.13.6"
+  image: "igur007/allure-server:v2.13.7"
   replicas: 1
   service:
     port: 8080
