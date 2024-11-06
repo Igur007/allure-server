@@ -1,11 +1,6 @@
 package qa.allure.gui;
 
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.spring.annotation.VaadinSessionScope;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-import qa.allure.properties.AllureProperties;
-
+import static java.lang.String.format;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -16,7 +11,13 @@ import java.util.Objects;
 import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static java.lang.String.format;
+import org.springframework.stereotype.Component;
+
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.spring.annotation.VaadinSessionScope;
+
+import lombok.extern.slf4j.Slf4j;
+import qa.allure.properties.AllureProperties;
 
 @Slf4j
 @Component

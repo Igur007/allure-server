@@ -1,19 +1,19 @@
 package qa.allure.properties;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.bind.ConstructorBinding;
+import org.springframework.core.io.Resource;
+
 import jakarta.annotation.Nullable;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.ConstructorBinding;
-import org.springframework.core.io.Resource;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 @ConfigurationProperties(prefix = "allure")
 @Getter
