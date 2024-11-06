@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drone-runner
+  namespace: drone
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: drone-runner
+  template:
+    metadata:
+      labels:
+        app: drone-runner
+    spec:
+      containers:
+        - name: drone-runner
+          image: drone/drone-runner-docker:latest
+          env:
+            - name: DRONE_RPC_HOST
+              value: "drone-service.drone.svc.cluster.local"  # Use the DNS name of the Drone server service
+            - name: DRONE_RPC_PROTO
+              value: "http"  # Protocol matches the Drone server setup
+            - name: DRONE_RPC_SECRET
+              value: "f16e3ae9aee177c166e86a03f2424697"  # Must match DRONE_RPC_SECRET in server
+            - name: DRONE_RUNNER_CAPACITY
+              value: "2"  # The number of parallel jobs the runner can handle
+            - name: DRONE_RUNNER_NAME
+              value: "minikube-runner"
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: docker-sock
+      volumes:
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock

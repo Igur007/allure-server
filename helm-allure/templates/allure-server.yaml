@@ -39,14 +39,9 @@ spec:
             - name: TMS_DRYRUN
               value: {{ .Values.allureServer.env.TMS_DRYRUN | quote }}
           volumeMounts:
-            - name: ext-volume
-              mountPath: /ext
             - name: allure-server-store
               mountPath: /allure
       volumes:
-        - name: ext-volume
-          persistentVolumeClaim:
-            claimName: ext-pvc
         - name: allure-server-store
           persistentVolumeClaim:
             claimName: allure-server-store-pvc

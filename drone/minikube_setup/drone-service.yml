@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: drone-service
+  namespace: drone
+spec:
+  type: NodePort
+  ports:
+    - port: 80               # Exposed service port
+      targetPort: 80         # Drone server port
+      nodePort: 32080        # NodePort in the 30000-32767 range
+  selector:
+    app: drone-server

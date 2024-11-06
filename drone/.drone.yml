@@ -1,0 +1,22 @@
+kind: pipeline
+name: default
+
+platform:
+  os: linux
+  arch: arm64
+
+trigger:
+  ref:
+    include:
+      - refs/heads/main
+      - refs/heads/sandbox
+      - refs/heads/test
+      - refs/pull/**
+      - refs/tags/v**
+
+steps:
+  - name: build
+    image: node:14
+    commands:
+      - npm install
+      - npm test

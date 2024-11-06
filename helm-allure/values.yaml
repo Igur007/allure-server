@@ -1,12 +1,12 @@
 # values.yaml
 
 allureServer:
-  image: "igur007/allure-server:v2.13.7"
+  image: "igur007/allure-server:v2.13.8"
   replicas: 1
   service:
     port: 8080
   env:
-    SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/allure"
+    SPRING_DATASOURCE_URL: "jdbc:postgresql://allure-server-postgresql:5432/allure"
     SPRING_DATASOURCE_USERNAME: "postgres"
     SPRING_DATASOURCE_PASSWORD: "postgres"
     SPRING_JPA_DATABASE: "postgresql"
@@ -19,14 +19,14 @@ allureServer:
     extSize: "1Gi"
     allureSize: "5Gi"
 
-postgres:
-  image: "postgres:16.3-alpine"
-  replicas: 1
-  service:
-    port: 5432
-  env:
-    POSTGRES_PASSWORD: "postgres"
-    POSTGRES_USER: "postgres"
-    POSTGRES_DB: "allure"
-  persistence:
-    size: "5Gi"
+postgresql:
+  enabled: true
+
+  auth:
+    username: "postgres"
+    password: "postgres"
+    database: "allure"
+    existingSecret: ""
+  primary:
+    persistence:
+      size: 5Gi

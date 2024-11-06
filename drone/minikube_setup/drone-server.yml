@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drone-server
+  namespace: drone
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: drone-server
+  template:
+    metadata:
+      labels:
+        app: drone-server
+    spec:
+      containers:
+        - name: drone-server
+          image: drone/drone:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: DRONE_GITHUB_CLIENT_ID
+              value: ""
+            - name: DRONE_GITHUB_CLIENT_SECRET
+              value: ""
+            - name: DRONE_RPC_SECRET
+              value: "f16e3ae9aee177c166e86a03f2424697"
+            - name: DRONE_SERVER_HOST
+              value: "http://192.168.49.2:32080"  # Correct URL to the drone-server via NodePort http://<minikube-ip>:32080
+            - name: DRONE_SERVER_PROTO
+              value: "http"
+            - name: DRONE_GITHUB_SERVER
+              value: "https://github.com"
+            - name: DRONE_USER_CREATE
+              value: "username:igur007,admin:true"
