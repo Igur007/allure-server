@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "kochetkovma/allure-server",
+    "Name": "igur007/allure-server",
     "Update": "true"
   },
   "Ports": [

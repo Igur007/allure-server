@@ -4,21 +4,27 @@ Allure-Server Kubernetes Helm Chart
 Helm chart to deploy Allure Server to Kubernetes.
 
 ### Download and install Helm
+- https://helm.sh/docs/intro/install/
 
 ### Download chart directory
 
-[allure-server chart](helm-allure)
+[allure-server chart](.)
 
 ### Execute commands
-- `kubectl create namespace allure-server`  
-  Create the namespace if it doesn’t exist:
-- `helm dependency build`
-- `helm delete allure-server -n allure-server`  
-  Delete previous chart if exists in the namespace
-- Go to root repository folder
-- `helm upgrade --install allure-server ./helm-allure -n allure-server`  
-  Install chart
+- Create the namespace if it doesn’t exist:
 
-### Execute commands
+    `kubectl create namespace allure-server`
+  
+- Build helm dependencies
 
-- Access via `ingress.host`
+    `helm dependency build`
+
+- Delete previous chart if exists in the namespace
+
+    `helm delete allure-server -n allure-server`  
+  
+- Go to root repository folder and install chart
+
+    `helm upgrade --install allure-server ./helm-allure -n allure-server`  
+
+- Access via `ingress.host` or port-forward allure-server service to localhost.
