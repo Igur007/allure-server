@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import io.qameta.allure.entity.ExecutorInfo;
-import jakarta.annotation.Nullable;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
@@ -29,7 +28,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +39,6 @@ import static org.apache.commons.io.FileUtils.deleteQuietly;
 import static qa.allure.gui.DateTimeResolver.zeroZone;
 import static qa.allure.helper.ExecutorCiPlugin.JSON_FILE_NAME;
 import static qa.allure.helper.Util.join;
-import static qa.allure.service.PathUtil.str;
 
 @Component
 @Slf4j
@@ -56,7 +53,7 @@ public class JpaReportService {
     private final ServeRedirectHelper redirection;
     private final JpaReportRepository repository;
     private final ResultService reportUnzipService;
-
+    private static final String INDEX_HTML = "index.html";
     private final AtomicBoolean init = new AtomicBoolean();
 
     public JpaReportService(AllureProperties cfg,
@@ -124,14 +121,14 @@ public class JpaReportService {
     @SneakyThrows
     public ReportEntity uploadReport(@NonNull String reportPath,
                                      @NonNull InputStream archiveInputStream,
-                                     @Nullable ExecutorInfo executorInfo,
+                                     ExecutorInfo executorInfo,
                                      String baseUrl) {
 
         // New report destination and entity
         final Path destination = reportUnzipService.unzipAndStore(archiveInputStream);
         final UUID uuid = UUID.fromString(destination.getFileName().toString());
         Preconditions.checkArgument(
-            Files.list(destination).anyMatch(path -> path.endsWith("index.html")),
+            Files.list(destination).anyMatch(path -> path.endsWith(INDEX_HTML)),
             "Uploaded archive is not an Allure Report"
         );
 
@@ -144,7 +141,7 @@ public class JpaReportService {
         var safeExecutorInfo = addExecutionInfo(
             destination,
             executorInfo,
-            baseUrl + str(reportsDir.resolve(uuid.toString())) + "/index.html",
+            getExecutorReportUrl(executorInfo, baseUrl, uuid, INDEX_HTML),
             uuid
         );
 
@@ -155,7 +152,7 @@ public class JpaReportService {
             .uuid(uuid)
             .path(reportPath)
             .createdDateTime(LocalDateTime.now(zeroZone()))
-            .url(join(baseUrl, cfg.reports().dir(), uuid.toString()) + "/")
+            .url(safeExecutorInfo.getReportUrl())
             .level(prevEntity.map(e -> e.getLevel() + 1).orElse(0L))
             .active(true)
             .size(ReportEntity.sizeKB(destination))
@@ -187,7 +184,7 @@ public class JpaReportService {
     public ReportEntity generate(@NonNull String reportPath,
                                  @NonNull List<Path> resultDirs,
                                  boolean clearResults,
-                                 @Nullable ExecutorInfo executorInfo,
+                                 ExecutorInfo executorInfo,
                                  String baseUrl
     ) throws IOException {
         // Preconditions
@@ -212,13 +209,14 @@ public class JpaReportService {
 
         // Add CI executor information
         var safeExecutorInfo = addExecutionInfo(
-            resultDirs.get(0),
+            resultDirs.getFirst(),
             executorInfo,
-            baseUrl + str(reportsDir.resolve(uuid.toString())) + "/index.html",
+            getExecutorReportUrl(executorInfo, baseUrl, uuid, INDEX_HTML),
             uuid
         );
 
-        var reportUrl = join(baseUrl, cfg.reports().dir(), uuid.toString()) + "/";
+        var reportUrl = getExecutorReportUrl(executorInfo, baseUrl, uuid, "/");
+
         try {
             // Add history to results if exists
             final List<Path> resultDirsToGenerate = historyO
@@ -248,7 +246,7 @@ public class JpaReportService {
             .active(true)
             .size(ReportEntity.sizeKB(destination))
             .buildUrl(
-                // Взять Build Url
+                // Get Build Url
                 ofNullable(safeExecutorInfo.getBuildUrl())
                     // Or Build Name
                     .or(() -> ofNullable(safeExecutorInfo.getBuildName()))
@@ -327,21 +325,16 @@ public class JpaReportService {
                                           String reportUrl,
                                           UUID uuid) throws IOException {
 
-        var executorInfo = ofNullable(executor).orElse(new ExecutorInfo());
+        ExecutorInfo executorInfo = new ExecutorInfo();
         executorInfo.setReportUrl(reportUrl);
+        executorInfo.setReportName(StringUtils.defaultIfBlank(executor.getReportName(), uuid.toString()));
+        executorInfo.setName(StringUtils.defaultIfBlank(executor.getName(), "Remote executor"));
+        executorInfo.setType(StringUtils.defaultIfBlank(executor.getType(), "CI"));
+        executorInfo.setUrl(executor.getUrl());
+        executorInfo.setBuildOrder(executor.getBuildOrder());
+        executorInfo.setBuildName(executor.getBuildName());
+        executorInfo.setBuildUrl(executor.getBuildUrl());
 
-        if (StringUtils.isBlank(executorInfo.getName())) {
-            executorInfo.setName("Remote executor");
-        }
-        if (StringUtils.isBlank(executorInfo.getType())) {
-            executorInfo.setType("CI");
-        }
-        if (StringUtils.isBlank(executorInfo.getReportName())) {
-            executorInfo.setName("Allure server generated " + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        }
-        if (StringUtils.isBlank(executorInfo.getReportName())) {
-            executorInfo.setReportName(uuid.toString());
-        }
         final ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
         final Path executorPath = resultPathWithInfo.resolve(JSON_FILE_NAME);
         writer.writeValue(executorPath.toFile(), executorInfo);
@@ -349,4 +342,16 @@ public class JpaReportService {
         return executorInfo;
     }
     //endregion
+
+    private String getExecutorReportUrl(ExecutorInfo executorInfo, String baseUrl, UUID uuid, String index_html) {
+        return join(getReportHost(executorInfo, baseUrl), reportsDir, uuid.toString(), index_html);
+    }
+
+    private String getReportHost(ExecutorInfo executorInfo, String baseUrl) {
+        return Optional.ofNullable(executorInfo)
+            .map(ExecutorInfo::getReportUrl)
+            .filter(StringUtils::isNotBlank)
+            .orElse(baseUrl);
+    }
+
 }

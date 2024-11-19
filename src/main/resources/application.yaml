@@ -4,8 +4,8 @@
 #    context-path: "/server"
 spring:
   servlet:
-    multipart.max-file-size: 100MB
-    multipart.max-request-size: 100MB
+    multipart.max-file-size: 300MB
+    multipart.max-request-size: 300MB
   datasource:
     url: "jdbc:h2:file:./allure/db"
     # H2 default username
@@ -50,7 +50,7 @@ springdoc:
 #   support.old.format: false
 #   date.format: "yy/MM/dd HH:mm:ss"
 allure:
-  title: "BrewCode | Allure Report"
+  title: "Allure Report"
   # FROM URL: https://avatars.githubusercontent.com/u/16944358?v=4
   # FROM FILE: file:/images/logo.png
   logo: ""

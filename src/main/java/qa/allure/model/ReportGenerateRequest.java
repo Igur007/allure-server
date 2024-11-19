@@ -34,6 +34,6 @@ public class ReportGenerateRequest {
 
     @JsonIgnore
     public List<Path> getResultsAsPath(@NonNull Path baseResultDir) {
-        return results.stream().map(p -> baseResultDir.resolve(Paths.get(p))).collect(Collectors.toUnmodifiableList());
+        return results.stream().map(p -> baseResultDir.resolve(Paths.get(p))).toList();
     }
 }

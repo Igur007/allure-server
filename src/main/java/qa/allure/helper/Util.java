@@ -18,11 +18,10 @@ public class Util {
     public static final ObjectMapper MAPPER = new ObjectMapper();
 
     public static String url(AllureProperties allureProperties) {
-        if (StringUtils.isBlank(allureProperties.serverBaseUrl())) {
-            return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/";
-        } else {
-            return allureProperties.serverBaseUrl();
-        }
+        return StringUtils.defaultIfBlank(
+            allureProperties.serverBaseUrl(),
+            ServletUriComponentsBuilder.fromCurrentContextPath().path("/").build().toUriString()
+        );
     }
 
     public static String concatParts(@Nullable String... part) {

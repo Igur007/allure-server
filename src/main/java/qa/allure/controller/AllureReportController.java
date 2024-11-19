@@ -77,8 +77,7 @@ public class AllureReportController {
                 entity.getPath(),
                 entity.generateUrl(baseUrl(), allureProperties.reports().dir()),
                 entity.generateLatestUrl(baseUrl(), allureProperties.reports().path())
-            ))
-            .collect(Collectors.toUnmodifiableList());
+            )).toList();
     }
 
     @Operation(summary = "Generate report")
@@ -98,7 +97,7 @@ public class AllureReportController {
         return new ReportResponse(
             reportEntity.getUuid(),
             reportEntity.getPath(),
-            reportEntity.generateUrl(baseUrl(), allureProperties.reports().dir()),
+            reportEntity.getUrl(),
             reportEntity.generateLatestUrl(baseUrl(), allureProperties.reports().path())
         );
     }
@@ -156,8 +155,7 @@ public class AllureReportController {
                 entity.getPath(),
                 entity.generateUrl(baseUrl(), allureProperties.reports().dir()),
                 entity.generateLatestUrl(baseUrl(), allureProperties.reports().path())
-            ))
-            .collect(Collectors.toUnmodifiableList());
+            )).toList();
     }
 
     @Operation(summary = "Delete all reports or older than date in epoch seconds")
@@ -177,8 +175,7 @@ public class AllureReportController {
                 entity.getPath(),
                 entity.generateUrl(baseUrl(), allureProperties.reports().dir()),
                 entity.generateLatestUrl(baseUrl(), allureProperties.reports().path())
-            ))
-            .collect(Collectors.toUnmodifiableList());
+            )).toList();
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
